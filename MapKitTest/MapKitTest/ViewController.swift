@@ -9,13 +9,25 @@ import UIKit
 import MapKit
 import CoreLocation
 import SnapKit
+import CoreData
+
 
 class ViewController: UIViewController {
-
+    
+    
+    var coreManager = CoreManager.share
     var moscowCoordinate  = CLLocationCoordinate2D(latitude:  55.741800 , longitude: 37.615800 )
     private lazy var mapView = MKMapView()
     private lazy var locationManager = CLLocationManager()
     
+  
+    
+    private lazy var aimSightView: UIImageView = {
+        let sight = UIImageView()
+        sight.image = UIImage(systemName: "plus.viewfinder")
+        sight.tintColor = .white
+        return  sight
+    } ()
     
     private lazy var makeRouteButton : UIButton = {
         let button = UIButton()
@@ -24,12 +36,32 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(setRouteToMoscow), for: .touchUpInside)
         return button
     }()
+    
+    private lazy var addPinButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = .white
+        button.contentHorizontalAlignment = .fill
+        button.contentVerticalAlignment = .fill
+        button.setImage(UIImage(systemName: "pin.circle.fill"), for: .normal)
+        button.addTarget(self, action: #selector(addPinAction), for: .touchUpInside)
+        return button
+    }()
    
+    private lazy var deletePinButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = .white
+        button.contentHorizontalAlignment = .fill
+        button.contentVerticalAlignment = .fill
+        button.setImage(UIImage(systemName: "pin.slash.fill"), for: .normal)
+        button.addTarget(self, action: #selector(deletePinAction), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.requestWhenInUseAuthorization()
+        setPins()
         setLayers()
-        addPin()
         configureMapView()
         print(locationManager.location)
     }
@@ -46,10 +78,54 @@ class ViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().offset(32)
         }
+        
+        self.view.addSubview(addPinButton)
+        addPinButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalTo(self.makeRouteButton.snp.top).offset(-20)
+            make.height.width.equalTo(50)
+
+        }
+        
+        self.view.addSubview(aimSightView)
+        aimSightView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
+        self.view.addSubview(deletePinButton)
+        deletePinButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalTo(self.addPinButton.snp.top).offset(-20)
+            make.height.width.equalTo(50)
+        }
+    }
+    
+    @objc func addPinAction () {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = mapView.centerCoordinate
+            mapView.addAnnotation(annotation)
+        let pin = Pin(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
+        self.coreManager.addPinsInCoreData(pin: pin)
+    }
+    
+    @objc func deletePinAction () {
+        let pins = self.coreManager.getPins() ?? []
+        for pin in pins {
+            self.coreManager.persistentContainer.viewContext.delete(pin)
+            self.coreManager.saveContext()
+        }
+       
+        mapView.removeAnnotations(mapView.annotations)
+
     }
 
     @objc func setRouteToMoscow(){
         let request = MKDirections.Request()
+        
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = moscowCoordinate
+        annotation.title = "Moscow"
+        mapView.addAnnotation(annotation)
         
         // добавляем начальную точку
         let sourceCoordinate = locationManager.location?.coordinate ?? CLLocationCoordinate2D(latitude:  59.93617 , longitude: 30.31661 )
@@ -88,14 +164,17 @@ class ViewController: UIViewController {
         mapView.setRegion(region, animated: true)
     }
     
-    func addPin () {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = moscowCoordinate
-        annotation.title = "Moscow"
-        mapView.addAnnotation(annotation)
-
+    func setPins() {
+        let pins = self.coreManager.getPins() ?? []
+        
+        for pin in pins {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate.latitude = pin.latitude
+            annotation.coordinate.longitude = pin.longitude
+            mapView.addAnnotation(annotation)
+        }
     }
-    
+
     
    
   
@@ -109,3 +188,4 @@ extension ViewController: MKMapViewDelegate {
         return render
     }
 }
+

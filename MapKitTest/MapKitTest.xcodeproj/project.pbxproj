@@ -14,6 +14,8 @@
 		14C4423B2959CE7600C544F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14C4423A2959CE7600C544F6 /* Assets.xcassets */; };
 		14C4423E2959CE7600C544F6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14C4423C2959CE7600C544F6 /* LaunchScreen.storyboard */; };
 		14C442472959CEA100C544F6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 14C442462959CEA100C544F6 /* SnapKit */; };
+		14C44249295C0F8500C544F6 /* CoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C44248295C0F8500C544F6 /* CoreManager.swift */; };
+		14C4424B295C115700C544F6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C4424A295C115700C544F6 /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		14C4423A2959CE7600C544F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		14C4423D2959CE7600C544F6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14C4423F2959CE7600C544F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14C44248295C0F8500C544F6 /* CoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreManager.swift; sourceTree = "<group>"; };
+		14C4424A295C115700C544F6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +65,8 @@
 				14C4422E2959CE7400C544F6 /* AppDelegate.swift */,
 				14C442302959CE7400C544F6 /* SceneDelegate.swift */,
 				14C442322959CE7400C544F6 /* ViewController.swift */,
+				14C44248295C0F8500C544F6 /* CoreManager.swift */,
+				14C4424A295C115700C544F6 /* Model.swift */,
 				14C4423A2959CE7600C544F6 /* Assets.xcassets */,
 				14C4423C2959CE7600C544F6 /* LaunchScreen.storyboard */,
 				14C4423F2959CE7600C544F6 /* Info.plist */,
@@ -148,7 +154,9 @@
 				14C442332959CE7400C544F6 /* ViewController.swift in Sources */,
 				14C442392959CE7400C544F6 /* MapKitTest.xcdatamodeld in Sources */,
 				14C4422F2959CE7400C544F6 /* AppDelegate.swift in Sources */,
+				14C4424B295C115700C544F6 /* Model.swift in Sources */,
 				14C442312959CE7400C544F6 /* SceneDelegate.swift in Sources */,
+				14C44249295C0F8500C544F6 /* CoreManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
